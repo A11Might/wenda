@@ -8,7 +8,6 @@ import com.nowcoder.model.EntityType;
 import com.nowcoder.model.HostHolder;
 import com.nowcoder.service.CommentService;
 import com.nowcoder.service.LikeService;
-import com.nowcoder.service.MessageService;
 import com.nowcoder.util.WendaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
