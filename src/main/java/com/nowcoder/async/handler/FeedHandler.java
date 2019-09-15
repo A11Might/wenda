@@ -14,7 +14,6 @@ import com.nowcoder.service.QuestionService;
 import com.nowcoder.service.UserService;
 import com.nowcoder.util.JedisAdapter;
 import com.nowcoder.util.RedisKeyUtil;
-import org.apache.ibatis.annotations.Arg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

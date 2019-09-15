@@ -23,7 +23,7 @@ import java.util.List;
  * @date 2019/9/13 - 10:38
  */
 @Controller
-public class FeedControl {
+public class FeedController {
     @Autowired
     HostHolder hostHolder;
 
@@ -36,7 +36,7 @@ public class FeedControl {
     @Autowired
     JedisAdapter jedisAdapter;
 
-    private static final Logger logger = LoggerFactory.getLogger(FeedControl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FeedController.class);
 
     // 推模式，直接从当前用户timeline中读取feed
     @RequestMapping(path = {"/pushfeeds"}, method = {RequestMethod.GET, RequestMethod.POST})
