@@ -28,11 +28,12 @@ public class MailSender implements InitializingBean {
     @Autowired
     private VelocityEngine velocityEngine;
 
+    // 通过模板创建并给目标用户发送邮件
     public boolean sendWithHTMLTemplate(String to, String subject,
                                         String template, Map<String, Object> model) {
         try {
             String nick = MimeUtility.encodeText("启航胡");
-            InternetAddress from = new InternetAddress(nick + "<qihanghu@foxmail.com>");
+            InternetAddress from = new InternetAddress(nick + "<huqihang012@163.com>");
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
             String result = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "UTF-8", model);
@@ -48,13 +49,15 @@ public class MailSender implements InitializingBean {
         }
     }
 
+    // 初始化邮件服务
     @Override
     public void afterPropertiesSet() throws Exception {
         mailSender = new JavaMailSenderImpl();
-        mailSender.setUsername("qihanghu@foxmail.com");
-        mailSender.setPassword("xxxx");
-//        mailSender.setHost("smtp.exmail.qq.com");
-        mailSender.setHost("smtp.qq.com");
+        mailSender.setUsername("huqihang012@163.com");
+        mailSender.setPassword("授权码");
+//        mailSender.setHost("smtp.exmail.qq.com"); // qq企业邮箱
+//        mailSender.setHost("smtp.qq.com"); // qq个人邮箱
+        mailSender.setHost("smtp.163.com"); // 163个人邮箱
         mailSender.setPort(465);
         mailSender.setProtocol("smtps");
         mailSender.setDefaultEncoding("utf8");
