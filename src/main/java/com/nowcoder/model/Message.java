@@ -3,14 +3,21 @@ package com.nowcoder.model;
 import java.util.Date;
 
 /**
- * Created by nowcoder on 2016/7/24.
+ * @author 胡启航
+ * @date 2019/9/17 - 22:48
  */
 public class Message {
+    // 谁(fromId)
+    // 发给谁(toId)
+    // 什么时候发的(createdDate)
+    // 发了什么(content)
+    // 读了吗(hasRead)
+    // 用于寻找两个用户的所有私信(conversationId)
     private int id;
     private int fromId;
     private int toId;
-    private String content;
     private Date createdDate;
+    private String content;
     private int hasRead;
     private String conversationId;
 
@@ -38,20 +45,20 @@ public class Message {
         this.toId = toId;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getHasRead() {
@@ -62,6 +69,7 @@ public class Message {
         this.hasRead = hasRead;
     }
 
+    // 用于取出两个用户之间的所有私信(固定格式：userId小的在前userId大的在后)
     public String getConversationId() {
         if (fromId < toId) {
             return String.format("%d_%d", fromId, toId);

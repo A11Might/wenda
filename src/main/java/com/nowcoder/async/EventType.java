@@ -11,7 +11,8 @@ public enum EventType {
     MAIL(3),
     FOLLOW(4),
     UNFOLLOW(5),
-    ADD_QUESTION(6);
+    ADD_QUESTION(6),
+    HAS_READ(7);
 
     private int value;
 

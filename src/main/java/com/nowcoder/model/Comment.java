@@ -3,13 +3,19 @@ package com.nowcoder.model;
 import java.util.Date;
 
 /**
- * Created by nowcoder on 2016/7/24.
+ * @author 胡启航
+ * @date 2019/9/17 - 18:33
  */
 public class Comment {
+    // 谁(userId)
+    // 对哪个实体(entityType, entityId(问题或者回答))
+    // 评论了什么(content)
+    // 评论时间(createdDate)
+    // 评论状态(status(0 未删除，1 已删除))
     private int id;
     private int userId;
-    private int entityId;
     private int entityType;
+    private int entityId;
     private String content;
     private Date createdDate;
     private int status;
@@ -30,20 +36,20 @@ public class Comment {
         this.userId = userId;
     }
 
-    public int getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(int entityId) {
-        this.entityId = entityId;
-    }
-
     public int getEntityType() {
         return entityType;
     }
 
     public void setEntityType(int entityType) {
         this.entityType = entityType;
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
     }
 
     public String getContent() {

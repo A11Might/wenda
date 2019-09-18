@@ -50,7 +50,7 @@ public class QuestionController {
         Question question = questionService.getById(qid);
         model.addAttribute("question", question);
 
-        List<Comment> commentList = commentService.getCommentsByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<Comment> commentList = commentService.getCommentsByEntity(EntityType.ENTITY_QUESTION, qid);
         List<ViewObject> comments = new ArrayList<ViewObject>();
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
@@ -60,7 +60,7 @@ public class QuestionController {
             } else {
                 vo.set("liked", likeService.getLikeStatus(hostHolder.getUser().getId(), EntityType.ENTITY_COMMENT, comment.getId()));
             }
-
+            // 这里需要改
             vo.set("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT, comment.getId()));
             vo.set("user", userService.getUser(comment.getUserId()));
             comments.add(vo);
