@@ -77,7 +77,7 @@ public class UserService {
         // 将当前注册用户，写入数据库
         user = new User();
         user.setName(username);
-        String headUrl = String.format("http://images.nowcoder.com/head/$dt.png", new Random().nextInt(1000));
+        String headUrl = String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000));
         user.setHeadUrl(headUrl);
         // 使用uuid随机生成salt(假设需要5位)
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
