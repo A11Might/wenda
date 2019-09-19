@@ -14,102 +14,108 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * Created by nowcoder on 2016/7/2.
+ * @author 胡启航
+ * @date 2019/9/19 - 8:49
  */
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    @Autowired
-    private UserDAO userDAO;
 
     @Autowired
-    private LoginTicketDAO loginTicketDAO;
+    UserDAO userDAO;
 
-    public User selectByName(String name) {
-        return userDAO.selectByName(name);
-    }
-
-    public Map<String, Object> register(String username, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (StringUtils.isBlank(username)) {
-            map.put("msg", "用户名不能为空");
-            return map;
-        }
-
-        if (StringUtils.isBlank(password)) {
-            map.put("msg", "密码不能为空");
-            return map;
-        }
-
-        User user = userDAO.selectByName(username);
-
-        if (user != null) {
-            map.put("msg", "用户名已经被注册");
-            return map;
-        }
-
-        // 密码强度
-        user = new User();
-        user.setName(username);
-        user.setSalt(UUID.randomUUID().toString().substring(0, 5));
-        String head = String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000));
-        user.setHeadUrl(head);
-        user.setPassword(WendaUtil.MD5(password+user.getSalt()));
-        userDAO.addUser(user);
-
-        // 登陆
-        String ticket = addLoginTicket(user.getId());
-        map.put("ticket", ticket);
-        return map;
-    }
-
+    @Autowired
+    LoginTicketDAO loginTicketDAO;
 
     public Map<String, Object> login(String username, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        // 使用map记录登录的错误信息(用于前端显示)
+        Map<String , Object> map = new HashMap<>();
         if (StringUtils.isBlank(username)) {
             map.put("msg", "用户名不能为空");
             return map;
         }
-
         if (StringUtils.isBlank(password)) {
             map.put("msg", "密码不能为空");
             return map;
         }
-
-        User user = userDAO.selectByName(username);
-
+        User user = userDAO.selectUserByName(username);
         if (user == null) {
             map.put("msg", "用户名不存在");
             return map;
         }
 
-        if (!WendaUtil.MD5(password+user.getSalt()).equals(user.getPassword())) {
-            map.put("msg", "密码不正确");
+        // 验证用户密码是否正确
+        if (!WendaUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
+            map.put("mag", "密码不正确");
             return map;
         }
 
+        // 成功验证登录后，生成t票
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         map.put("userId", user.getId());
         return map;
     }
 
+    public Map<String, Object> register(String username, String password) {
+        // 使用map注册登录的错误信息(用于前端显示)
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isBlank(username)) {
+            map.put("msg", "用户名不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(password)) {
+            map.put("msg", "密码不能为空");
+            return map;
+        }
+        User user = userDAO.selectUserByName(username);
+        if (user != null) {
+            map.put("msg", "用户名已经被注册");
+            return map;
+        }
+
+        // 将当前注册用户，写入数据库
+        user = new User();
+        user.setName(username);
+        String headUrl = String.format("http://images.nowcoder.com/head/$dt.png", new Random().nextInt(1000));
+        user.setHeadUrl(headUrl);
+        // 使用uuid随机生成salt(假设需要5位)
+        user.setSalt(UUID.randomUUID().toString().substring(0, 5));
+        // 使用salt和md5加密密码
+        user.setPassword(WendaUtil.MD5(password + user.getSalt()));
+        userDAO.addUser(user);
+
+        // 成功验证登录后，生成t票
+        String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
+        return map;
+    }
+
+    // 给当前登录用户添加t票
     private String addLoginTicket(int userId) {
         LoginTicket ticket = new LoginTicket();
         ticket.setUserId(userId);
+        // 设置过期时间(3个月)
         Date date = new Date();
-        date.setTime(date.getTime() + 1000*3600*24);
+        date.setTime(date.getTime() + 1000 * 3600 * 24);
         ticket.setExpired(date);
         ticket.setStatus(0);
+        // 设置t票内容(使用uuid随机生成(其中会含有-，替换掉))
         ticket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
         loginTicketDAO.addTicket(ticket);
         return ticket.getTicket();
     }
 
-    public User getUser(int id) {
-        return userDAO.selectById(id);
+    // getuserbyid
+    public User getUserById(int id) {
+        return userDAO.selectUserById(id);
     }
 
+    public User getUserByName(String name) {
+        return userDAO.selectUserByName(name);
+    }
+
+    // 登出就是将t票过期
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket, 1);
     }

@@ -3,11 +3,13 @@ package com.nowcoder.model;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by nowcoder on 2016/7/3.
+ * @author 胡启航
+ * @date 2019/9/18 - 19:50
  */
 @Component
 public class HostHolder {
-    private static ThreadLocal<User> users = new ThreadLocal<User>();
+    // 当前用户，每个线程有一个拷贝份
+    private static ThreadLocal<User> users = new ThreadLocal<>();
 
     public User getUser() {
         return users.get();
@@ -18,6 +20,6 @@ public class HostHolder {
     }
 
     public void clear() {
-        users.remove();;
+        users.remove();
     }
 }

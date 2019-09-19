@@ -33,7 +33,7 @@ public class CommentHandler implements EventHandler {
         message.setFromId(WendaUtil.SYSTEM_USERID);
         message.setToId(model.getEntityOwnerId());
         message.setCreatedDate(new Date());
-        User actorUser = userService.getUser(model.getActorId());
+        User actorUser = userService.getUserById(model.getActorId());
         message.setContent("用户" + actorUser.getName() + "评论了你的问题, http://127.0.0.1:8080/question/" + model.getEntityId());
         messageService.addMessage(message);
     }

@@ -3,9 +3,16 @@ package com.nowcoder.model;
 import java.util.Date;
 
 /**
- * Created by nowcoder on 2016/7/15.
+ * @author 胡启航
+ * @date 2019/9/18 - 19:35
  */
 public class Question {
+    // 那个问题(id)
+    // 问题标题(title)
+    // 问题内容(content)
+    // 创建时间(createdDate)
+    // 创建者(userId)
+    // 评论数(commentCount)
     private int id;
     private String title;
     private String content;

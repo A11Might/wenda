@@ -43,7 +43,7 @@ public class FeedHandler implements EventHandler {
     private String buildFeedData(EventModel model) {
         Map<String, String> map = new HashMap<>();
         // 触发用户是通用的
-        User actor = userService.getUser(model.getActorId());
+        User actor = userService.getUserById(model.getActorId());
         if (actor == null) {
             return null;
         }
@@ -57,7 +57,7 @@ public class FeedHandler implements EventHandler {
         // 当触发事件是问题时(评论问题和关注问题)，feed中加入问题信息
         if (model.getType() == EventType.COMMENT ||
                 (model.getType() == EventType.FOLLOW && model.getEntityType() == EntityType.ENTITY_QUESTION)) {
-            Question question = questionService.getById(model.getEntityId());
+            Question question = questionService.getQuestionById(model.getEntityId());
             if (question == null) {
                 return null;
             }

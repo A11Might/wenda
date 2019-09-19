@@ -95,7 +95,7 @@ public class FollowController {
             return WendaUtil.getJSONString(999);
         }
 
-        Question question = questionService.getById(questionId);
+        Question question = questionService.getQuestionById(questionId);
         if (question == null) {
             return WendaUtil.getJSONString(1, "问题不存在");
         }
@@ -128,7 +128,7 @@ public class FollowController {
             return WendaUtil.getJSONString(999);
         }
 
-        Question question = questionService.getById(questionId);
+        Question question = questionService.getQuestionById(questionId);
         if (question == null) {
             return WendaUtil.getJSONString(1, "问题不存在");
         }
@@ -163,7 +163,7 @@ public class FollowController {
             model.addAttribute("followers", getUsersInfo(0, followerIds));
         }
         model.addAttribute("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, userId));
-        model.addAttribute("curUser", userService.getUser(userId));
+        model.addAttribute("curUser", userService.getUserById(userId));
 
         return "followers";
     }
@@ -179,7 +179,7 @@ public class FollowController {
             model.addAttribute("followees", getUsersInfo(0, followeeIds));
         }
         model.addAttribute("followeeCount",followService.getFolloweeCount(userId, EntityType.ENTITY_USER));
-        model.addAttribute("curUser", userService.getUser(userId));
+        model.addAttribute("curUser", userService.getUserById(userId));
 
         return "followees";
     }
@@ -193,7 +193,7 @@ public class FollowController {
     private List<ViewObject> getUsersInfo(int localUserId, List<Integer> userIds) {
         List<ViewObject> userInfos = new ArrayList<>();
         for (Integer uid : userIds) {
-            User user = userService.getUser(uid);
+            User user = userService.getUserById(uid);
             if (user == null) {
                 continue;
             }

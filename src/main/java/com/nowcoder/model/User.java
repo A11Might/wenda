@@ -1,9 +1,16 @@
 package com.nowcoder.model;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
- * Created by nowcoder on 2016/6/26.
+ * @author 胡启航
+ * @date 2019/9/18 - 19:33
  */
 public class User {
+    // 用户姓名(name)
+    // 密码(password)
+    // 盐(salt)(用于加密密码，防止撞库)
+    // 头像(headUrl)
     private int id;
     private String name;
     private String password;
@@ -13,11 +20,20 @@ public class User {
     public User() {
 
     }
+
     public User(String name) {
         this.name = name;
         this.password = "";
         this.salt = "";
         this.headUrl = "";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,13 +66,5 @@ public class User {
 
     public void setHeadUrl(String headUrl) {
         this.headUrl = headUrl;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

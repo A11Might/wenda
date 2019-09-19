@@ -13,39 +13,26 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 胡启航
+ * @date 2019/8/16 - 13:11
+ */
 @Service
 public class SensitiveService implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(SensitiveService.class);
 
-    /**
-     * 默认敏感词替换符
-     */
-    private static final String DEFAULT_REPLACEMENT = "敏感词";
+    private static final String DEFAULT_REPLACEMENT = "***";
 
-
+    // 前缀树节点类
     private class TrieNode {
-
-        /**
-         * true 关键词的终结 ； false 继续
-         */
         private boolean end = false;
+        private Map<Character, TrieNode> subNodes = new HashMap<>(); // 在路径上存储字符
 
-        /**
-         * key下一个字符，value是对应的节点
-         */
-        private Map<Character, TrieNode> subNodes = new HashMap<>();
-
-        /**
-         * 向指定位置添加节点树
-         */
         void addSubNode(Character key, TrieNode node) {
             subNodes.put(key, node);
         }
 
-        /**
-         * 获取下个节点
-         */
         TrieNode getSubNode(Character key) {
             return subNodes.get(key);
         }
@@ -58,33 +45,42 @@ public class SensitiveService implements InitializingBean {
             this.end = end;
         }
 
-        public int getSubNodeCount() {
+        int getSubNodeCount() {
             return subNodes.size();
         }
-
-
     }
 
-
-    /**
-     * 根节点
-     */
+    // 根节点
     private TrieNode rootNode = new TrieNode();
 
+    // 建前缀树
+    private void addWord(String lineTxt) {
+        TrieNode curNode = rootNode;
+        for (int i = 0; i < lineTxt.length(); i++) {
+            Character c = lineTxt.charAt(i);
+            if (isSymbol(c)) {
+                continue;
+            }
+            TrieNode node = curNode.getSubNode(c);
+            // 没有当前字符，新建
+            if (node == null) {
+                node = new TrieNode();
+                curNode.addSubNode(c, node);
+            }
+            curNode = node;
+            if (i == lineTxt.length() - 1) {
+                curNode.setKeywordEnd(true);
+            }
+        }
+    }
 
-    /**
-     * 判断是否是一个符号
-     */
+    // 判断是否是一个字符(0x2E80, 0x9FFF) 东亚文字范围
     private boolean isSymbol(char c) {
         int ic = (int) c;
-        // 0x2E80-0x9FFF 东亚文字范围
         return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF);
     }
 
-
-    /**
-     * 过滤敏感词
-     */
+    // 过滤敏感词
     public String filter(String text) {
         if (StringUtils.isBlank(text)) {
             return text;
@@ -92,72 +88,40 @@ public class SensitiveService implements InitializingBean {
         String replacement = DEFAULT_REPLACEMENT;
         StringBuilder result = new StringBuilder();
 
-        TrieNode tempNode = rootNode;
-        int begin = 0; // 回滚数
-        int position = 0; // 当前比较的位置
+        TrieNode curNode = rootNode;
+        int begin = 0;
+        int position = 0;
 
         while (position < text.length()) {
             char c = text.charAt(position);
-            // 空格直接跳过
             if (isSymbol(c)) {
-                if (tempNode == rootNode) {
+                // 如果空格在敏感词中间就跳过，否则加入
+                if (begin == position) {
                     result.append(c);
-                    ++begin;
+                    begin++;
                 }
-                ++position;
+                position++;
                 continue;
             }
-
-            tempNode = tempNode.getSubNode(c);
-
-            // 当前位置的匹配结束
-            if (tempNode == null) {
-                // 以begin开始的字符串不存在敏感词
+            curNode = curNode.getSubNode(c);
+            if (curNode == null) {
                 result.append(text.charAt(begin));
-                // 跳到下一个字符开始测试
-                position = begin + 1;
-                begin = position;
-                // 回到树初始节点
-                tempNode = rootNode;
-            } else if (tempNode.isKeywordEnd()) {
-                // 发现敏感词， 从begin到position的位置用replacement替换掉
+                begin++;
+                position = begin;
+                curNode = rootNode;
+            } else if (curNode.isKeywordEnd()) {
                 result.append(replacement);
-                position = position + 1;
+                position++;
                 begin = position;
-                tempNode = rootNode;
             } else {
-                ++position;
+                position++;
             }
         }
 
+        // 加入最后一段非完整敏感词文本
         result.append(text.substring(begin));
 
         return result.toString();
-    }
-
-    private void addWord(String lineTxt) {
-        TrieNode tempNode = rootNode;
-        // 循环每个字节
-        for (int i = 0; i < lineTxt.length(); ++i) {
-            Character c = lineTxt.charAt(i);
-            // 过滤空格
-            if (isSymbol(c)) {
-                continue;
-            }
-            TrieNode node = tempNode.getSubNode(c);
-
-            if (node == null) { // 没初始化
-                node = new TrieNode();
-                tempNode.addSubNode(c, node);
-            }
-
-            tempNode = node;
-
-            if (i == lineTxt.length() - 1) {
-                // 关键词结束， 设置结束标志
-                tempNode.setKeywordEnd(true);
-            }
-        }
     }
 
 

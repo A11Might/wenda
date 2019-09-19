@@ -47,6 +47,7 @@ public class MessageService {
         return messageDAO.getConversationUnreadCount(userId, conversationId);
     }
 
+    // 标记已读私信
     public boolean hasReadMessage(int userId) {
         return messageDAO.updateHasRead(userId, 1) > 0 ? true : false;
     }

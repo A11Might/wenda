@@ -16,7 +16,7 @@ public class RedisTest {
         System.out.println(String.format("%d, %s", index, obj.toString()));
     }
 
-    public static void main(String[] args) {
+    public static void mainx(String[] args) {
         // 默认不填，连接6379本地端口
         // 等于select 9选择第9个数据库
         Jedis jedis = new Jedis("redis://localhost:6379/9");

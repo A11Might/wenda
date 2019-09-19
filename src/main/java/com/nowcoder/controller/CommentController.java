@@ -9,7 +9,6 @@ import com.nowcoder.model.HostHolder;
 import com.nowcoder.model.Question;
 import com.nowcoder.service.CommentService;
 import com.nowcoder.service.QuestionService;
-import com.nowcoder.util.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class CommentController {
 
             // 触发评论问题事件(向问题作者发站内信)
             // 匿名没有hostholder设置actorid错误，无法生成事件(简单处理只有登录用户才能评论)
-            Question question = questionService.getById(questionId);
+            Question question = questionService.getQuestionById(questionId);
             eventProducer.fireEvent(new EventModel(EventType.COMMENT)
                     .setActorId(hostHolder.getUser().getId())
                     .setEntityType(EntityType.ENTITY_QUESTION)

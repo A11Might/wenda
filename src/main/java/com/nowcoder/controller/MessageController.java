@@ -53,7 +53,7 @@ public class MessageController {
             }
 
             // 判断当前用户是否存在
-            User toUser = userService.selectByName(toName);
+            User toUser = userService.getUserByName(toName);
             if (toUser == null) {
                 return WendaUtil.getJSONString(1, "用户不存在");
             }
@@ -89,7 +89,7 @@ public class MessageController {
             // 获取的是所有与当前登录用户有关的信息(可能是发送者或是接收者)
             // 在自己的私信列表中需要显示对方用户信息，所以如下操作
             int targetId = message.getFromId() == localUserId ? message.getToId() : message.getFromId();
-            vo.set("user", userService.getUser(targetId));
+            vo.set("user", userService.getUserById(targetId));
             vo.set("unread", messageService.getConversationUnreadCount(localUserId, message.getConversationId()));
             conversations.add(vo);
         }
@@ -107,7 +107,7 @@ public class MessageController {
             for (Message message : messageList) {
                 ViewObject vo = new ViewObject();
                 vo.set("message", message);
-                vo.set("user", userService.getUser(message.getFromId()));
+                vo.set("user", userService.getUserById(message.getFromId()));
                 messages.add(vo);
             }
             model.addAttribute("messages", messages);
