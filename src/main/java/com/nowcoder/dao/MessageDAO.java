@@ -22,6 +22,8 @@ public interface MessageDAO {
     int addMessage(Message message);
 
     // 通过conversationId获取两用户之间所有私信
+    // 分页：offset从第几个开出，limit去多少个
+    // 例如：从第20个取20个，从第40个取20个...
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME,
              " where conversation_id=#{conversationId} order by created_date desc limit #{offset}, #{limit}"})
     List<Message> getConversationDetail(@Param("conversationId") String conversationId,
@@ -35,7 +37,8 @@ public interface MessageDAO {
                               @Param("conversationId") String conversationId);
 
     // 获取私信列表页信息
-    // 按时间逆序所有私信后，获取所有与当前用户有关的私信的时间最近的一条，再在按时间逆序排列
+    // 按时间逆序所有私信后，获取所有其他与当前用户有关的私信的时间最近的一条，再在按时间逆序排列
+    // 需要统计每组conversation_id中私信的个数，使用count将统计的结果映射到id上(message的id用不到)
     @Select({"select ", INSERT_FIELDS, " , count(id) as id from ( select * from ", TABLE_NAME,
             " where from_id=#{userId} or to_id=#{userId} order by created_date desc) tt group by conversation_id order by created_date desc limit #{offset}, #{limit}"})
     List<Message> getConversationList(@Param("userId") int userId,

@@ -130,6 +130,8 @@ public class LoginController {
     public String regloginPage(Model model,
                            // requestparam中要设其他参数时，要如下操作(required，变量是否必须)
                            @RequestParam(value = "next", required = false) String next) {
+        // 将next字段，埋入html的form中，在提交登录时，可以将next字段传递过来
+        // 在登陆成功后，判断next字段是否为空，来判断是跳转到首页，还是next
         model.addAttribute("next", next);
         return "login";
     }

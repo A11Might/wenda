@@ -29,6 +29,7 @@ public class LoginExceptionHandler implements EventHandler {
         mailSender.sendWithHTMLTemplate(model.getExt("email"), "登录失败", "mails/login_exception.html", map);
     }
 
+    // 注册handler，所有登录服务使用该handler
     @Override
     public List<EventType> getSupportEventTypes() {
         return Arrays.asList(EventType.LOGIN);

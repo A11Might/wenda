@@ -40,6 +40,7 @@ public class LikeHandler implements EventHandler {
         messageService.addMessage(message);
     }
 
+    // 注册handler，所有点赞踩服务使用该handler
     @Override
     public List<EventType> getSupportEventTypes() {
         return Arrays.asList(EventType.LIKE);

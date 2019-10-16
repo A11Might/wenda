@@ -74,7 +74,7 @@ public class SensitiveService implements InitializingBean {
         }
     }
 
-    // 判断是否是一个字符(0x2E80, 0x9FFF) 东亚文字范围
+    // 判断是否是一个字符 (0x2E80, 0x9FFF)是东亚文字范围
     private boolean isSymbol(char c) {
         int ic = (int) c;
         return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF);
@@ -95,7 +95,7 @@ public class SensitiveService implements InitializingBean {
         while (position < text.length()) {
             char c = text.charAt(position);
             if (isSymbol(c)) {
-                // 如果空格在敏感词中间就跳过，否则加入
+                // 如果符号在敏感词中间就跳过，否则加入
                 if (begin == position) {
                     result.append(c);
                     begin++;
@@ -104,15 +104,18 @@ public class SensitiveService implements InitializingBean {
                 continue;
             }
             curNode = curNode.getSubNode(c);
+            // 以begin开始的字符串不是敏感词
             if (curNode == null) {
                 result.append(text.charAt(begin));
                 begin++;
                 position = begin;
                 curNode = rootNode;
+            // 从begin到position之间的字符串是敏感词
             } else if (curNode.isKeywordEnd()) {
                 result.append(replacement);
                 position++;
                 begin = position;
+            //  从begin到position之间的字符串不确定是否是敏感词
             } else {
                 position++;
             }
@@ -125,6 +128,7 @@ public class SensitiveService implements InitializingBean {
     }
 
 
+    // 初始化字典树
     @Override
     public void afterPropertiesSet() throws Exception {
         rootNode = new TrieNode();

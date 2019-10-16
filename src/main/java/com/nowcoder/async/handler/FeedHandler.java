@@ -97,6 +97,7 @@ public class FeedHandler implements EventHandler {
         }
     }
 
+    // 注册handler，所有评论服务和关注服务使用该handler
     @Override
     public List<EventType> getSupportEventTypes() {
         return Arrays.asList(EventType.COMMENT, EventType.FOLLOW);

@@ -87,6 +87,7 @@ public class JedisAdapter implements InitializingBean {
         return false;
     }
 
+    // 弹出最后一个元素(blpop，弹出第一个元素)
     public List<String> brpop(int timeout, String key) {
         Jedis jedis = null;
         try {

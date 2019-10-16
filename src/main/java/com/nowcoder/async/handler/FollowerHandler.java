@@ -46,7 +46,7 @@ public class FollowerHandler implements EventHandler {
         messageService.addMessage(message);
     }
 
-    // 所有关注事件(关注用户，关注问题...)使用该handler
+    // 注册handler，所有关注事件(关注用户，关注问题...)使用该handler
     @Override
     public List<EventType> getSupportEventTypes() {
         return Arrays.asList(EventType.FOLLOW);

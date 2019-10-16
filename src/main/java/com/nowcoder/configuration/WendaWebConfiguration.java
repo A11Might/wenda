@@ -25,6 +25,7 @@ public class WendaWebConfiguration extends WebMvcConfigurerAdapter {
         // loginRequiredInterceptor在passportInterceptor后加入
         // 先使用passportInterceptor在cookie中寻找ticket
         // 再在loginRequiredInterceptor判断用户是否需要记录当前url并跳转到登录
+        // addPathPatterns()：拦截要求
         // addPathPatterns("user/*")，只有用户界面未登录时，才记录url(其实站内的url都应该记录，演示方便)
         registry.addInterceptor(passportInterceptor);
         registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("user/*");

@@ -24,7 +24,7 @@ import java.util.Map;
 @Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware {
     private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
-    // map<事件类型，需要处理事件的handler>
+    // 事件类型 -> 需要处理事件的handler
     private Map<EventType, List<EventHandler>> config = new HashMap<>();
     private ApplicationContext applicationContext;
 

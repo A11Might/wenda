@@ -34,6 +34,7 @@ public class MessageHandler implements EventHandler {
         }
     }
 
+    // 注册handler，所有已读服务使用该handler
     @Override
     public List<EventType> getSupportEventTypes() {
         return Arrays.asList(EventType.HAS_READ);

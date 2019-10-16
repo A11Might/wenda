@@ -49,12 +49,14 @@ public class MessageController {
             // 当前用户未登录，跳转到登录界面
             // 若是返回模板，直接重定向；否则返回999
             if (hostHolder.getUser() == null) {
+                // 999表示未登录
                 return WendaUtil.getJSONString(999, "未登录");
             }
 
             // 判断当前用户是否存在
             User toUser = userService.getUserByName(toName);
             if (toUser == null) {
+                // 1表示失败
                 return WendaUtil.getJSONString(1, "用户不存在");
             }
 
@@ -65,7 +67,7 @@ public class MessageController {
             message.setCreatedDate(new Date());
             message.setContent(content);
             messageService.addMessage(message);
-            // 成功返回0
+            // 0表示成功
             return WendaUtil.getJSONString(0);
         } catch (Exception e) {
             logger.error("发送消息失败" + e.getMessage());
