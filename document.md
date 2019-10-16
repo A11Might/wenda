@@ -4,36 +4,32 @@
 
 - Part I
 
-    - [1.1 最简单的服务器](#1.1-最简单的服务器)
-    - [1.2 request/response](#1.2-request/response)
-    - [1.3 重定向](#1.3-重定向)
-    - [1.4 Error](#1.4-Error)
-    - [1.5 IoC(控制反转)](#1.5-IoC(控制反转))
-    - [1.6 AOP(面向切面编程)](#1.6-AOP(面向切面编程))
-
-----
+    - [1.1 最简单的服务器](#最简单的服务器)
+    - [1.2 request/response](#request/response)
+    - [1.3 重定向](#重定向)
+    - [1.4 Error](#Error)
+    - [1.5 IoC(控制反转)](#IoC(控制反转))
+    - [1.6 AOP(面向切面编程)](#AOP(面向切面编程))
 
 - Part II
 
-    - [2.1 数据库字段的设计](#2.1-数据库字段的设计)
-    - [2.2 数据库创建](#2.2-数据库创建)
-    - [2.3 数据库操作(CRUD)](#2.3-数据库操作(CRUD))
-    - [2.4 MyBatis](#2.4-MyBatis)
-    - [2.5 ViewObject](#2.5-ViewObject)
-
-----
+    - [2.1 数据库字段的设计](#数据库字段的设计)
+    - [2.2 数据库创建](#数据库创建)
+    - [2.3 数据库操作(CRUD)](#数据库操作(CRUD))
+    - [2.4 MyBatis](#MyBatis)
+    - [2.5 ViewObject](#ViewObject)
 
 - Part III
 
-    - [3.1 interceptor(拦截器)](#3.1-拦截器(interceptor))
-    - [3.2 Ajax请求](#3.2-Ajax请求)
-    - [3.3 敏感词过滤](#3.3-敏感词过滤)
-    - [3.4 多线程](#3.4-多线程)
-    - [3.5 redis](#3.5-redis)
+    - [3.1 interceptor(拦截器)](#拦截器(interceptor))
+    - [3.2 Ajax请求](#Ajax请求)
+    - [3.3 敏感词过滤](#敏感词过滤)
+    - [3.4 多线程](#多线程)
+    - [3.5 redis](#redis)
 
 <!-- /TOC -->
 
-#### 1.1 最简单的服务器
+#### 最简单的服务器
 
 ![img](https://github.com/A11Might/A11Might.github.io/blob/master/img/nowcoder2016/1_1.jpg)
 
@@ -72,7 +68,7 @@ public String template(Model model) { // model将数据传递到模板中
 ```
 
 
-#### 1.2 request/response
+#### request/response
 
 HttpServletRequest、HttpServletResponse是网页请求request和服务器返回信息response的包装
 
@@ -92,7 +88,7 @@ HttpServletRequest、HttpServletResponse是网页请求request和服务器返回
 
     response.addCookie(new Cookie(key, value));response.addHeader(key, value);
 
-#### 1.3 重定向
+#### 重定向
 
 - http状态码301：永久重定向，意为旧的URL已经不在使用，已永久转移至新的地址
 
@@ -109,7 +105,7 @@ HttpServletRequest、HttpServletResponse是网页请求request和服务器返回
     }
 ```
 
-#### 1.4 Error
+#### Error
 
 定义一个ExceptionHandler，抛出异常时，进行统一的异常处理
 
@@ -122,7 +118,7 @@ public String error(Exception e) {
 }
 ```
 
-#### 1.5 IoC(控制反转)
+#### IoC(控制反转)
 
 无需关注变量的初始化，只要使用注解表示其是来自bean池对象的初始化，就会自动设置上
 
@@ -131,7 +127,7 @@ public String error(Exception e) {
 PassportInterceptor passportInterceptor;
 ```
 
-#### 1.6 AOP(面向切面编程)
+#### AOP(面向切面编程)
 
 面向切面，所有业务都要处理的业务
 
@@ -165,7 +161,7 @@ public class LogAspect {
 }
 ```
 
-#### 2.1 数据库字段的设计
+#### 数据库字段的设计
 
 | id | name | password | salt | head_url |
 |-----|-----|-----|-----|-----|
@@ -179,13 +175,13 @@ public class LogAspect {
 
 - 每一列是实体的具体信息，如上用户表，包含用户姓名，密码，salt和头像
 
-#### 2.2 数据库创建
+#### 数据库创建
 
 使用workbrench图形化界面创建
 
 int 整数类型；varchar(n) 可变字符；datetime 日期类型；float(m, d) 浮点类型；text 长字符串
 
-#### 2.3 数据库操作（CRUD）
+#### 数据库操作（CRUD）
 
 ```sql
 # 增
@@ -216,7 +212,7 @@ select * from (select * from message order by created_date desc) tt group by con
 SELECT COUNT(column_name) FROM table_name
 ```
 
-#### 2.4 MyBatis
+#### MyBatis
 
 - 注解配置
 
@@ -277,7 +273,7 @@ List<Question> selectLatestQuestions(@Param("userId") int userId,
 </mapper>
 ```
 
-#### 2.5 ViewObject
+#### ViewObject
 
 使用vo整合实体(如问题)以及该实体相关信息(如发问题用户的信息和当前问题关注数)一并传递给模板
 
@@ -295,7 +291,7 @@ public class ViewObject {
 }
 ```
 
-#### 3.1 拦截器(interceptor)
+#### 拦截器(interceptor)
 
 拦截器在链路上设置回调接口，所有的请求都会回调注册过的拦截器(相较于切面编程的好处是相关请求request和response等都已经包装好了)
 
@@ -335,11 +331,11 @@ public class WendaWebConfiguration extends WebMvcConfigurerAdapter {
 }
 ```
 
-#### 3.2 Ajax请求
+#### Ajax请求
 
 ajax请求(异步的JavaScript请求)，不是提交到页面，而是提交到后台，后台返回一个json格式字符串后，再进行动态的刷新处理(翻页时不刷新页面，直接从json格式字符串中提取信息替换掉)
 
-#### 3.3 敏感词过滤
+#### 敏感词过滤
 
 ```java
 public String filter(String text) {
@@ -389,7 +385,7 @@ public String filter(String text) {
 }
 ```
 
-#### 3.4 多线程
+#### 多线程
 
 - Thread
 
@@ -514,7 +510,7 @@ public static void testFuture() {
 }
 ```
 
-#### 3.5 redis
+#### redis
 
 - redis.conf
 
