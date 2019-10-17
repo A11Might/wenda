@@ -177,6 +177,7 @@ public class JedisAdapter implements InitializingBean {
         return null;
     }
 
+    // exec方法，参数中有jedis，在执行完事务后关闭jedis
     public List<Object> exec(Transaction tx, Jedis jedis) {
         try {
             return tx.exec();

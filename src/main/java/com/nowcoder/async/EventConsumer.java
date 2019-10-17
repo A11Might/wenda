@@ -24,7 +24,10 @@ import java.util.Map;
 @Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware {
     private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
-    // 事件类型 -> 需要处理事件的handler
+    // 事件类型 -> 处理事件的handler
+    // 每个handler可以处理很多event类型，每种event也可能需要多个handler处理
+    // 通过映射关系，构造map
+    // 这样在拿到event的时候可以知道需要哪些handler处理，依次处理即可
     private Map<EventType, List<EventHandler>> config = new HashMap<>();
     private ApplicationContext applicationContext;
 

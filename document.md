@@ -25,7 +25,7 @@
     - [3.2 Ajax请求](#Ajax请求)
     - [3.3 敏感词过滤](#敏感词过滤)
     - [3.4 多线程](#多线程)
-    - [3.5 redis](#redis)
+    - [3.5 Redis](#Redis)
 
 <!-- /TOC -->
 
@@ -510,7 +510,7 @@ public static void testFuture() {
 }
 ```
 
-#### redis
+#### Redis
 
 - redis.conf
 
@@ -551,6 +551,6 @@ public long sadd(String key, String value) {
 
 - [Redis数据结构](https://github.com/A11Might/wenda/blob/master/src/main/java/com/nowcoder/util/RedisTest.java)
 
-- redis的使用
+- Redis的使用
 
 PV、点赞、关注、排行榜、验证码、缓存、异步队列、判题队列
