@@ -15,7 +15,7 @@
 
     - [2.1 数据库字段的设计](#数据库字段的设计)
     - [2.2 数据库创建](#数据库创建)
-    - [2.3 数据库操作(CRUD)](#数据库操作(CRUD))
+    - [2.3 数据库操作(CRUD)](#数据库操作)
     - [2.4 MyBatis](#MyBatis)
     - [2.5 ViewObject](#ViewObject)
 
@@ -181,7 +181,7 @@ public class LogAspect {
 
 int 整数类型；varchar(n) 可变字符；datetime 日期类型；float(m, d) 浮点类型；text 长字符串
 
-#### 数据库操作（CRUD）
+#### 数据库操作
 
 ```sql
 # 增
